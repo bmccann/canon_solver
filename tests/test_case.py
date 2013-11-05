@@ -5,7 +5,7 @@ import canon_solver.solver.canon_utils as cu
 
 class TestCase(object):
   def __init__(self, name, theme, costs=cu.getSimpleCosts(),
-               notes=cu.getSimpleNotes(), verbosity=3):
+               notes=cu.getSimpleNotes(), verbosity=0):
     self.name = name
     self.costs = costs
     self.notes = notes
@@ -14,20 +14,24 @@ class TestCase(object):
     self.voices = []
 
   def run(self):
-    scenario = CanonScenario(theme, self.notes)
-    problem = CanonProblem(scenario, self.costs)
+    self.scenario = CanonScenario(self.theme, self.notes)
+    problem = CanonProblem(self.scenario, self.costs)
     ucs = UniformCostSearch(self.verbosity)
 
     print self
     ucs.solve(problem)
     self.getVoices(ucs.actions)
+    for v in self.voices:
+      print v
 
   def getVoices(self, actions):
+    start = self.scenario.theme
     for a in actions:
       if "Shift" in a:
-        to_shift = a.split[-1]
-        next_voice = self.theme[-1*to_shift:] + self.theme[:-1*to_shift]
+        to_shift = int(a.split()[-1])
+        next_voice = start[-1*to_shift:] + start[:-1*to_shift]
         self.voices.append(next_voice) 
+
 
   def __str__(self):
     s = "Test Case:"

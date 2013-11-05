@@ -60,3 +60,12 @@ class CanonScenario:
 			for i in range(int(duration)):
 				V.append(self.noteMap[pitch])
 		return tuple(V)
+
+	# def constructSong(self, state):
+	# 	for 		notes = song.split(",")
+	# 	for n in notes:
+	# 		pitch = n.split(":")[0]
+	# 		duration = n.split(":")[1]
+	# 		for i in range(int(duration)):
+	# 			V.append(self.noteMap[pitch])
+	# 	return tuple(V)
