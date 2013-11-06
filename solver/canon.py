@@ -47,6 +47,9 @@ class CanonScenario:
 		for i in range(len(self.theme)):
 			next_state = self.theme[-1*i:] + self.theme[:-1*i] 
 			results.append(("Shift " + str(i), next_state))
+
+		## Reversal
+		## Transposition
 		return results
 
 	def __str__(self): return self.theme
