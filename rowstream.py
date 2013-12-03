@@ -1,7 +1,6 @@
 from music21 import *
 c1 = clef.TrebleClef()
 row = stream.Stream()
-dottedQuarter = duration.Duration(type = 'quarter', dots = 1)
 row.append(note.Note('D4', quarterLength=1.5))
 row.append(note.Note('D4', quarterLength=1.5)) 
 

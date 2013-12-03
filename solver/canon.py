@@ -1,6 +1,7 @@
-import util, math
+import util, math, music21
 
 class CanonProblem(util.SearchProblem):
+
 	def __init__(self, scenario, costs):
 			self.scenario = scenario
 			self.intervalCosts = costs
@@ -44,12 +45,18 @@ class CanonScenario:
 	def getActions(self, state): #V is current vector
 		results = []
 		next_state = state
-		for i in range(len(self.theme)):
+		#Shift (Round)
+		for i in range(len(self.theme.notes)):
+			next_state = s.sliceAtOffsets(i, inPlace=True)
 			next_state = self.theme[-1*i:] + self.theme[:-1*i] 
-			results.append(("Shift " + str(i), next_state))
 
 		## Reversal
+		next_state = self.theme[::-1]
+		results.append(("Reverse", next_state))
 		## Transposition
+		for i in xrange(2,8):
+			next_state = self.theme.transpose(music21.interval.GenericInterval(i))
+			results.append(("Transposed by generic " + str(i), next_state))
 		return results
 
 	def __str__(self): return self.theme
