@@ -1,9 +1,9 @@
-import util, math
+import util, math, music21
 from featureExtractor import ScoreFeatureExtractor
 from canon_utils import euclideanDistance
-from music21 import stream
 
 class CanonProblem(util.SearchProblem):
+
 	def __init__(self, scenario, costs):
 			self.scenario = scenario
 			self.intervalCosts = costs
@@ -21,7 +21,7 @@ class CanonProblem(util.SearchProblem):
 	# but it contains only the key value that indicates a note has not been 
 	# selected at that time slice.
 	def startState(self):
-		return stream.Score()
+		return music21.stream.Score()
 
 	# The goal state cannot be the original theme. Otherwise, 
 	# there are currently no restrictions as long as a decision
@@ -38,7 +38,7 @@ class CanonProblem(util.SearchProblem):
 		# for i in range(len(theme)):
 		# 	result += self.intervalCosts[math.fabs(theme[i] - new_voice[i])]
 		# return result
-		sc = stream.Score()
+		sc = music21.stream.Score()
 		sc.insert(0, theme)
 		sc.insert(0, new_voice)
 		sfe = ScoreFeatureExtractor(stream = sc)
@@ -63,12 +63,18 @@ class CanonScenario:
 	def getActions(self, state): #V is current vector
 		results = []
 		next_state = state
-		for i in range(len(self.theme)):
+		#Shift (Round)
+		for i in range(len(self.theme.notes)):
+			next_state = s.sliceAtOffsets(i, inPlace=True)
 			next_state = self.theme[-1*i:] + self.theme[:-1*i] 
-			results.append(("Shift " + str(i), next_state))
 
 		## Reversal
+		next_state = self.theme[::-1]
+		results.append(("Reverse", next_state))
 		## Transposition
+		for i in xrange(2,8):
+			next_state = self.theme.transpose(music21.interval.GenericInterval(i))
+			results.append(("Transposed by generic " + str(i), next_state))
 		return results
 
 	def __str__(self): return self.theme
