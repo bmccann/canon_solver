@@ -8,3 +8,5 @@ After installing music21, you can run a sample of the canon solver from the cons
 Two examples are included in these supplementary materials. By default, the canon solver is set to solver puzzle1, a variation on the King's Royal Theme. In order to change to puzzle2, simply change the method in line 78 of the run script of canon.py from puzzle1 to puzzle2.
 
 You can also listen to the audio output from our baseline and puzzle1 in the audio directory. 
+
+Although our writeup was six pages in our word processor, it came out much shorter when we transferred to laTex; hopefully less reading is better for you!
