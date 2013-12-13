@@ -26,30 +26,6 @@ class ScoreFeatureExtractor:
 			ins = []
 			if not analyzedKey:
 				analyzedKey = s.analyze('key')
-			if len(s.parts) < 2: continue
-			# if len(stream.parts) < 3: 
-
-				# try:
-				# 	for interval in music21.theoryAnalysis.theoryAnalyzer.getHarmonicIntervals(stream, 0, 1):
-				# 		intervals.append(re.search('([0-9]+)>', str(interval)).group(0)[:-1])
-				# except: 
-				# 	stream.parts[0].quantize()
-				# 	stream.parts[1].quantize()
-				# 	intervals = []
-
-				# 	for i in range(len(stream.parts[0])):
-				# 		notes0 = stream.parts[0].getElementsByOffset(i).notes
-				# 		notes1 = stream.parts[0].getElementsByOffset(i).notes
-				# 		if len(notes0) and len(notes1):
-				# 			n0 = notes0[0]
-				# 			n1 = notes1[0]
-				# 			intervals.append(music21.interval.notesToChromatic(n0, n1))
-				
-				# self.intervalSets.append(intervals)
-
-				# self.chordProgressions = []
-
-				# pickle.dump(self.intervalSets, open('intervals', 'w'))
 			else:
 
 				try:
@@ -65,8 +41,6 @@ class ScoreFeatureExtractor:
 					ins.append(re.search('([0-9]+)>', str(mainInterval)).group(0)[:-1])
 				self.chordProgressions.append(cs)
 				self.intervalSets.append(ins)
-				# pickle.dump(self.chordProgressions, open('chords', 'w'))
-				# pickle.dump(self.intervalSets, open('intervals', 'w'))
 
 
 	def extractNgrams(self, sizes):
@@ -86,12 +60,9 @@ class ScoreFeatureExtractor:
 						key += chordSet[idx-n:idx]
 						self.chordFeatures[tuple(key)] += 1. / (Z - n)
 		for key in self.chordFeatures.keys():
-				# self.chordFeatures[key] /= Z - (len(key)-1)
 			self.features[key] = self.chordFeatures[key]
-			# print self.features[key]
 
 		for intervalSet in self.intervalSets:
-			# print intervalSet
 			Z = float(len(intervalSet))
 			for idx, inter in enumerate(intervalSet):
 				for n in sizes:
@@ -99,30 +70,16 @@ class ScoreFeatureExtractor:
 					# print '...'
 					if (idx >= n): 
 						key += intervalSet[idx-n:idx]
-						# print key
 						self.intervalFeatures[tuple(key)] += 1. / (Z - n)
-						# print self.intervalFeatures[tuple(key)]
 			
-			# print Z
 		for key in self.intervalFeatures.keys():
-			# 	print self.intervalFeatures[key]
-			# 	self.intervalFeatures[key] /= Z - (len(key)-1)
 			self.features[key] = self.intervalFeatures[key]
-			# print self.features[key]
 		print "...features extracted"
 
 
 if __name__ == "__main__":
 	sfe = ScoreFeatureExtractor(bundle = music21.corpus.search('bach'))
-	# sfe = ScoreFeatureExtractor()
 
 	sfe.parse() 
-	# sfe.chordProgressions = pickle.load(open('chords', 'r'))
-	# sfe.intervalSets = pickle.load(open('intervals', 'r'))
 	sfe.extractNgrams([2,3,4])
-	# print sfe.intervalFeatures
-	# print sfe.intervalFeatures
-	pickle.dump(sfe.features, open('features', 'w'))
-	# pickle.dump(sfe.intervalFeatures, open('intervalFeatures', 'w'))
-	# sfe.chordFeatures = pickle.load(open('chordFeatures', 'r'))
-	# sfe.intervalFeatures = pickle.load(open('intervalFeatures', 'r'))
+	pickle.dump(sfe.features, open('features.pkl', 'w'))

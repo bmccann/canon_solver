@@ -265,10 +265,6 @@ def puzzle1():
 
 	s.insert(0, puzzle1)
 	return puzzle1
-#s.insert(0, part2)
-
-
-# s.show()
 
 def puzzle2():
 	c = clef.CClef()
@@ -279,9 +275,6 @@ def puzzle2():
 
 
 	#Ignore pickups so it's matched more easly
-	#puzzle9.append(note.Rest(quarterLength=3))
-	#puzzle9.append(note.Note('C4', quarterLength=0.5))
-	#puzzle9.append(note.Note('D4', quarterLength=0.5))
 	puzzle9.append(note.Note('E-4', quarterLength=1))
 	puzzle9.append(note.Note('E4', quarterLength=1))
 	puzzle9.append(note.Note('F4', quarterLength=1))
@@ -364,9 +357,5 @@ def puzzle2():
 
 	s.insert(0, puzzle9)
 	return puzzle9
-# print s.flat.notes[1]
-#s.show()
-
-#s.show()
 
 
